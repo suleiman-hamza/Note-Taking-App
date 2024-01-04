@@ -3,7 +3,7 @@
         v-model="input" 
         type="text" 
         v-on:keyup.enter="addNote"
-        :placeholder="placeholder" />
+        placeholder="Enter Note Here" />
 </template>
 
 <script setup>
@@ -12,7 +12,7 @@
     const props = defineProps(['placeholder'])
     const emit = defineEmits(['monitorEvent']);
 
-    let input = ref('')
+    const input = ref('');
     const addNote = () => {
         emit('monitorEvent', {
             note: input.value,

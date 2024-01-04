@@ -1,15 +1,24 @@
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 import InputComponent from './components/InputComponent.vue'
 
-let notes = reactive([])
-let timestamps = reactive([])
-const placeholder = 'Enter a note';
+const notes = reactive([])
+const timestamps = reactive([])
 
 const handleEvent = (event) => {
   notes.push(event.note);
   timestamps.push(event.timeStamp);
-};
+
+  localStorage.setItem('notes', JSON.stringify(notes))
+  localStorage.setItem('timestamps', JSON.stringify(timestamps))
+}
+
+onMounted(() => {
+  const not = localStorage.getItem('notes')
+  if (not) {
+    notes = not
+  }
+})
 </script>
 
 <template>
@@ -18,17 +27,17 @@ const handleEvent = (event) => {
         <div class="column has-text-centered">
           <strong>Notes</strong>
           <div class="notess" v-for="items in notes">
-            {{ notes }}
+            {{ items }}
           </div>
         </div>
         <div class="column has-text-centered">
           <strong>Timestamp</strong>
           <div class="timestamps" v-for="time in timestamps">
-            {{ timestamps }}
+            {{ time }}
           </div>
         </div>
       </div>
-      <InputComponent @monitorEvent="handleEvent" :placeholder="placeholder" />
+      <InputComponent @monitorEvent="handleEvent" />
     </div>
 </template>
 
