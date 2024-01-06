@@ -9,7 +9,6 @@
 <script setup>
     import { ref } from 'vue';
 
-    const props = defineProps(['placeholder'])
     const emit = defineEmits(['monitorEvent']);
 
     const input = ref('');
