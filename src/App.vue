@@ -1,28 +1,33 @@
 <script setup>
-import { reactive, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import InputComponent from './components/InputComponent.vue'
 
-let notes = reactive([])
-let timestamps = reactive([])
+let notes = ref([])
+let timestamps = ref([])
 
 onMounted(() => {
-  let storedItem = localStorage.getItem('notes')
-  let stored = localStorage.getItem('timestamps')
+  const retrieveString = localStorage.getItem('notes') || []
+  const retrievedArray = JSON.parse(retrieveString)
+  notes.value = retrievedArray
 
-  notes = storedItem ? JSON.parse(storedItem) : null
-  timestamps = stored ? JSON.parse(stored) : null
+  const retrievedTimeStamp = localStorage.getItem('timestamped')
+  const retrievedTime = JSON.parse(retrievedTimeStamp)
+  timestamps.value = retrievedTime
 })
 
 const handleEvent = (event) => {
-  notes.push(event.note);
-  timestamps.push(event.timeStamp);
+  notes.value.push(event.note);
+  timestamps.value.push(event.timeStamp);
 
   handleSave();
 }
 
 function handleSave() {
-  localStorage.setItem('notes', JSON.stringify(notes))
-  localStorage.setItem('timestamps', JSON.stringify(timestamps))
+  const stringifiedArray = JSON.stringify(notes.value)
+  localStorage.setItem('notes', stringifiedArray)
+
+  const stringifiedTimestamp = JSON.stringify(timestamps.value)
+  localStorage.setItem('timestamped', stringifiedTimestamp)
 }
 </script>
 
